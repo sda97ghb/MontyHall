@@ -4,7 +4,8 @@
 #include <time.h>
 
 static constexpr int NUMBER_OF_EXPERIMENTS = 1000000;
-static constexpr bool CHANGE_DOOR = false;
+static const std::vector<int> ALL_DOORS = {1, 2, 3};
+static constexpr bool CHANGE_DOOR = true;
 
 // Choose random element from the set
 int chooseRandom(std::vector<int> numbers)
@@ -23,8 +24,6 @@ std::vector<int> exclude(std::vector<int> numbers, int number)
     return numbers;
 }
 
-std::vector<int> ALL_DOORS = {1, 2, 3};
-
 int main()
 {
     srand(time(0));
@@ -33,9 +32,9 @@ int main()
     {
         int prizeDoor = chooseRandom(ALL_DOORS);
         int choosenDoor = chooseRandom(ALL_DOORS);
-        int openedDoor = exclude(exclude(ALL_DOORS, prizeDoor), choosenDoor).front();
+        int openedDoor = chooseRandom(exclude(exclude(ALL_DOORS, prizeDoor), choosenDoor));
         if (CHANGE_DOOR)
-            choosenDoor = exclude(exclude(ALL_DOORS, choosenDoor), openedDoor).front();
+            choosenDoor = chooseRandom(exclude(exclude(ALL_DOORS, choosenDoor), openedDoor));
         if (choosenDoor == prizeDoor)
             ++ numberOfWins;
     }
